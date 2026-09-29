@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>منتور هوشمند کسب‌وکار</title>
+<style>
+:root{
+  --bg:#f7f5f2; --card:#ffffff; --ink:#1f1c19; --muted:#726b63;
+  --accent:#b5652f; --accent2:#3f6b52; --line:#e6e0d8; --danger:#a1442f;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#17140f; --card:#211d18; --ink:#f1ece4; --muted:#a89d90;
+    --accent:#e08a4c; --accent2:#6fae8c; --line:#332c24;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#17140f; --card:#211d18; --ink:#f1ece4; --muted:#a89d90;
+  --accent:#e08a4c; --accent2:#6fae8c; --line:#332c24;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px); height:100%;}
+*{box-sizing:border-box;}
+body{
+  margin:0; min-height:100%; background:var(--bg); color:var(--ink);
+  font-family:"Vazirmatn","Segoe UI",Tahoma,sans-serif;
+  line-height:1.7;
+}
+.wrap{max-width:920px;margin:0 auto;padding:20px 16px 60px;}
+header{position:sticky; top:env(safe-area-inset-top,0px); z-index:5; background:var(--bg); padding-bottom:10px;}
+h1{font-size:1.35rem;margin:6px 0 4px;}
+.sub{color:var(--muted);font-size:.92rem;margin-bottom:14px;}
+.progress-row{display:flex;align-items:center;gap:10px;}
+.bar{flex:1;height:10px;border-radius:6px;background:var(--line);overflow:hidden;}
+.bar > div{height:100%;background:var(--accent2);transition:width .3s;}
+.pct{font-size:.85rem;color:var(--muted);min-width:38px;text-align:left;}
+.tabs{display:flex;gap:6px;overflow-x:auto;padding:10px 0 4px;scrollbar-width:none;}
+.tabs::-webkit-scrollbar{display:none;}
+.tab{
+  flex:0 0 auto;padding:7px 12px;border-radius:20px;border:1px solid var(--line);
+  background:var(--card);color:var(--muted);font-size:.82rem;cursor:pointer;white-space:nowrap;
+}
+.tab.active{background:var(--accent);border-color:var(--accent);color:#fff;}
+.tab .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--line);margin-inline-start:6px;}
+.tab.done .dot{background:var(--accent2);}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;margin-top:10px;}
+.card h2{margin:0 0 10px;font-size:1.1rem;color:var(--accent);}
+.questions{margin:0 0 12px;padding-inline-start:20px;color:var(--muted);font-size:.9rem;}
+.questions li{margin-bottom:3px;}
+textarea{
+  width:100%;min-height:150px;border:1px solid var(--line);border-radius:10px;
+  padding:12px;font-family:inherit;font-size:.95rem;background:var(--bg);color:var(--ink);resize:vertical;
+}
+.mentor{
+  margin-top:12px;padding:12px 14px;border-radius:10px;background:color-mix(in srgb, var(--accent2) 12%, var(--card));
+  border:1px solid var(--accent2);font-size:.87rem;
+}
+.mentor b{color:var(--accent2);}
+.checklist{margin-top:10px;font-size:.85rem;color:var(--muted);}
+.checklist label{display:flex;gap:8px;align-items:flex-start;margin-bottom:4px;cursor:pointer;}
+.nav-btns{display:flex;justify-content:space-between;margin-top:16px;gap:10px;}
+.nav-btns button{
+  padding:9px 16px;border-radius:9px;border:1px solid var(--line);background:var(--card);
+  color:var(--ink);cursor:pointer;font-size:.88rem;
+}
+.nav-btns button.primary{background:var(--accent);border-color:var(--accent);color:#fff;}
+.status{font-size:.78rem;color:var(--muted);margin-top:8px;min-height:16px;}
+.overview{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-top:14px;}
+.ov-card{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--card);font-size:.85rem;}
+.ov-card b{display:block;margin-bottom:4px;}
+.ov-card span{color:var(--muted);}
+
+#gate{
+  position:fixed;inset:0;background:var(--bg);z-index:50;
+  display:flex;align-items:center;justify-content:center;padding:20px;
+}
+#gate .box{
+  background:var(--card);border:1px solid var(--line);border-radius:14px;
+  padding:28px 24px;max-width:360px;width:100%;text-align:center;
+}
+#gate h2{margin:0 0 6px;font-size:1.15rem;}
+#gate p{color:var(--muted);font-size:.88rem;margin:0 0 16px;}
+#gate input{
+  width:100%;padding:11px 12px;border-radius:9px;border:1px solid var(--line);
+  background:var(--bg);color:var(--ink);font-size:.95rem;text-align:center;margin-bottom:10px;
+}
+#gate button{
+  width:100%;padding:11px;border-radius:9px;border:none;background:var(--accent);
+  color:#fff;font-size:.95rem;cursor:pointer;
+}
+#gate .err{color:var(--danger);font-size:.82rem;min-height:18px;margin-top:8px;}
+body.locked > .wrap{display:none;}
+.aibtn{margin-top:12px;padding:10px 16px;border-radius:9px;border:1px solid var(--accent2);background:transparent;color:var(--accent2);cursor:pointer;font-size:.9rem;width:100%;}
+.aibtn:disabled{opacity:.6;cursor:wait;}
+.ai{margin-top:12px;font-size:.88rem;border:1px solid var(--line);border-radius:10px;padding:12px 14px;background:var(--bg);}
+.ai h4{margin:10px 0 4px;font-size:.9rem;color:var(--accent);}
+.ai ul{margin:0;padding-inline-start:18px;}
+.score{display:inline-block;padding:2px 10px;border-radius:12px;background:var(--accent2);color:#fff;font-weight:bold;}
+.docbtns{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px;}
+.docbtns button{flex:1;min-width:150px;padding:11px;border-radius:9px;border:none;background:var(--accent);color:#fff;cursor:pointer;font-size:.9rem;}
+.docbtns button:disabled{opacity:.6;cursor:wait;}
+#docView{display:none;margin-top:14px;line-height:1.9;}
+#docView h2,#docView h3{color:var(--accent);} .li{margin:2px 0;padding-inline-start:10px;}
+@media print{#docView .nav-btns{display:none}.wrap > *:not(#docView){display:none!important} #docView{display:block!important;border:none;color:#000;background:#fff}}
+</style>
+</head>
+<body class="locked">
+<div id="gate">
+  <div class="box">
+    <h2>🔒 دسترسی محدود</h2>
+    <p>برای استفاده از این ابزار، کد دسترسی اختصاصی‌ات رو وارد کن.</p>
+    <input type="text" id="gateInput" placeholder="کد دسترسی" autocomplete="off">
+    <button id="gateBtn">ورود</button>
+    <div class="err" id="gateErr"></div>
+  </div>
+</div>
+<div class="wrap">
+<header>
+  <h1>منتور هوشمند کسب‌وکار</h1>
+  <div class="sub">مرحله به مرحله جلو برو، به راهنمای منتور توجه کن، پیشرفتت خودکار ذخیره می‌شود.</div>
+  <div class="progress-row">
+    <div class="bar"><div id="barFill" style="width:0%"></div></div>
+    <div class="pct" id="pctText">۰٪</div>
+  </div>
+  <div class="tabs" id="tabs"></div>
+</header>
+
+<div class="card" id="sectionCard"></div>
+<div class="status" id="statusLine"></div>
+
+<div class="overview" id="overview"></div>
+<div class="docbtns">
+  <button id="planBtn">📄 بیزنس پلن کامل</button>
+  <button id="roadBtn">🗓 برنامه ۹۰ روزه</button>
+</div>
+<div class="status" id="docStatus"></div>
+<div class="card" id="docView"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script>
+const SECTIONS = [
+  {id:"idea", title:"ایده و مسئله", questions:[
+    "چه مشکلی رو حل می‌کنی؟ برای چه کسانی؟",
+    "چرا الان زمان مناسبیه برای این ایده؟"
+  ], tip:"مسئله رو با یک مثال واقعی و عینی توضیح بده، نه با کلی‌گویی. اگر نمی‌تونی مشکل رو در یک جمله ساده بگی، هنوز به‌اندازه کافی شفاف نیست."},
+
+  {id:"solution", title:"راه‌حل و محصول", questions:[
+    "راه‌حل تو دقیقاً چیه و چطور کار می‌کنه؟",
+    "چرا این راه‌حل بهتر از جایگزین‌های فعلیه؟"
+  ], tip:"روی یک مزیت اصلی (Unique Value) تمرکز کن. سعی نکن همه‌چیز رو حل کنی؛ بهترین بیزنس‌پلن‌ها روی یک نقطه قوت واضح تکیه می‌کنند."},
+
+  {id:"market", title:"بازار هدف و مشتری", questions:[
+    "مشتری ایده‌آل تو دقیقاً کیه؟",
+    "اندازه‌ی بازار چقدره و از کجا این عدد اومده؟"
+  ], tip:"از یک عدد قابل دفاع استفاده کن (منبع، تحقیق، یا محاسبه‌ی ساده Top-down/Bottom-up). ادعای 'بازار میلیارد دلاری' بدون منبع اعتبار نداره."},
+
+  {id:"revenue", title:"مدل درآمدی", questions:[
+    "چطور پول درمیاری؟ (اشتراک، تراکنشی، تبلیغاتی...)",
+    "قیمت‌گذاری اولیه چقدره و چرا؟"
+  ], tip:"مدل درآمدی باید با رفتار واقعی مشتری هم‌خوانی داشته باشه. اگر مشتری عادت به پرداخت ماهانه نداره، مدل اشتراکی ریسک بالایی داره."},
+
+  {id:"competition", title:"رقبا و مزیت رقابتی", questions:[
+    "رقبای مستقیم و غیرمستقیم کی‌ان؟",
+    "چرا مشتری تو رو به جای اون‌ها انتخاب می‌کنه؟"
+  ], tip:"حداقل دو رقیب واقعی رو نام ببر. نبود رقیب معمولاً یعنی بازار وجود نداره، نه اینکه ایده‌ات بی‌نظیره."},
+
+  {id:"marketing", title:"استراتژی جذب مشتری", questions:[
+    "اولین ۱۰۰ مشتری رو از کجا میاری؟",
+    "هزینه جذب هر مشتری (CAC) تقریباً چقدره؟"
+  ], tip:"روی یک یا دو کانال اصلی تمرکز کن، نه ده کانال به‌طور سطحی. عمق در یک کانال از پخش‌شدن در همه جا مؤثرتره."},
+
+  {id:"team", title:"تیم", questions:[
+    "چه کسانی در تیم هستند و مهارت هرکدام چیه؟",
+    "چه نقشی هنوز خالیه؟"
+  ], tip:"روی تجربه‌ی مرتبط با این مسئله‌ی خاص تمرکز کن، نه فقط رزومه‌ی کلی. سرمایه‌گذاران و شرکا دنبال 'چرا این تیم' هستند."},
+
+  {id:"financials", title:"مالی و بودجه", questions:[
+    "هزینه‌های ثابت و متغیر ماهانه چقدره؟",
+    "به چه مبلغی و برای چه مدتی نیاز داری؟"
+  ], tip:"یک پیش‌بینی ساده و محافظه‌کارانه بهتر از یک مدل پیچیده و خوش‌بینانه‌ست. فرض‌های کلیدی رو صریح بنویس."},
+
+  {id:"roadmap", title:"نقشه راه", questions:[
+    "۳ ماه، ۶ ماه و ۱۲ ماه آینده چه اتفاقی می‌افته؟",
+    "مهم‌ترین نقطه عطف (Milestone) بعدی چیه؟"
+  ], tip:"مراحل رو به گونه‌ای تعریف کن که قابل اندازه‌گیری باشند (مثلاً '۵۰۰ کاربر فعال'، نه 'رشد خوب')."},
+
+  {id:"risks", title:"ریسک‌ها و راه مقابله", questions:[
+    "بزرگ‌ترین ریسکی که می‌تونه این کسب‌وکار رو شکست بده چیه؟",
+    "برای هرکدوم چه برنامه‌ای داری؟"
+  ], tip:"صادقانه بزرگ‌ترین نقطه‌ضعف رو بنویس. مخفی‌کردن ریسک به کسی کمک نمی‌کنه؛ داشتن برنامه‌ی B اعتماد ایجاد می‌کنه."}
+];
+
+const SUPABASE_URL = "https://cbpihoekujvrqhnbhvjl.supabase.co";
+const SUPABASE_KEY = "sb_publishable_lY4ReO3fBBXLM3BnrpfBZg_Av0XZSwx";
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+let state = {};
+SECTIONS.forEach(s => state[s.id] = "");
+let current = 0;
+let saveTimer = null;
+let currentCode = null;
+
+function wordCount(t){ return (t.trim().match(/\S+/g) || []).length; }
+function isDone(id){ return wordCount(state[id]) >= 15; }
+function progressPct(){
+  const done = SECTIONS.filter(s => isDone(s.id)).length;
+  return Math.round((done / SECTIONS.length) * 100);
+}
+
+function renderTabs(){
+  const tabs = document.getElementById("tabs");
+  tabs.innerHTML = "";
+  SECTIONS.forEach((s, i) => {
+    const b = document.createElement("button");
+    b.className = "tab" + (i === current ? " active" : "") + (isDone(s.id) ? " done" : "");
+    b.innerHTML = s.title + '<span class="dot"></span>';
+    b.onclick = () => { current = i; renderAll(); };
+    tabs.appendChild(b);
+  });
+}
+
+function renderSection(){
+  const s = SECTIONS[current];
+  const card = document.getElementById("sectionCard");
+  card.innerHTML = `
+    <h2>${current+1}. ${s.title}</h2>
+    <ul class="questions">${s.questions.map(q => `<li>${q}</li>`).join("")}</ul>
+    <textarea id="ta" placeholder="پاسخ‌ات رو اینجا بنویس...">${esc(state[s.id] || "")}</textarea>
+    <div class="mentor"><b>راهنمای منتور:</b> ${s.tip}</div>
+    <button class="aibtn" id="aiBtn">🧠 تحلیل هوشمند این بخش</button>
+    <div id="aiBox"></div>
+    <div class="nav-btns">
+      <button id="prevBtn" ${current===0?"disabled":""}>◀ قبلی</button>
+      <button class="primary" id="nextBtn">${current===SECTIONS.length-1?"پایان":"بعدی ▶"}</button>
+    </div>
+  `;
+  const ta = document.getElementById("ta");
+  ta.addEventListener("input", () => {
+    state[s.id] = ta.value;
+    renderTabs();
+    renderProgress();
+    renderOverview();
+    scheduleSave();
+  });
+  document.getElementById("aiBtn").onclick = analyze;
+  renderAi();
+  document.getElementById("prevBtn").onclick = () => { current = Math.max(0, current-1); renderAll(); };
+  document.getElementById("nextBtn").onclick = () => { current = Math.min(SECTIONS.length-1, current+1); renderAll(); };
+}
+
+function renderProgress(){
+  const p = progressPct();
+  document.getElementById("barFill").style.width = p + "%";
+  document.getElementById("pctText").textContent = p.toLocaleString("fa-IR") + "٪";
+}
+
+function renderOverview(){
+  const ov = document.getElementById("overview");
+  ov.innerHTML = SECTIONS.map(s => `
+    <div class="ov-card">
+      <b>${isDone(s.id) ? "✅" : "◻️"} ${s.title}</b>
+      <span>${wordCount(state[s.id])} کلمه${(state._ai&&state._ai[s.id])?" · امتیاز "+state._ai[s.id].score:""}</span>
+    </div>
+  `).join("");
+}
+
+function renderAll(){
+  renderTabs();
+  renderSection();
+  renderProgress();
+  renderOverview();
+}
+
+function setStatus(t){
+  document.getElementById("statusLine").textContent = t;
+}
+
+function scheduleSave(){
+  setStatus("در حال ذخیره...");
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(saveState, 700);
+}
+
+function dataKey(){ return "bpf_data_" + currentCode; }
+
+async function saveState(){
+  try{ localStorage.setItem(dataKey(), JSON.stringify({data: state, updatedAt: Date.now()})); }catch(e){}
+
+  try{
+    const { error } = await sb.rpc("upsert_plan", { p_code: currentCode, p_data: state });
+    if(error) throw error;
+    setStatus("ذخیره شد ✓");
+  }catch(e){
+    setStatus("ذخیره شد (فقط روی همین دستگاه) ✓");
+  }
+}
+
+const esc = t => String(t ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+const KNOWLEDGE_BASE = {
+  idea: [
+    { id:"idea_problem_clear", severity:"critical", required:true, depends_on:[], min_positive_matches:1,
+      score_if_pass:10, score_if_fail:-15,
+      positive_signs:["مشکل|دردسر|چالش|کمبود|نمی‌تونن|نمی‌توانند|سخته|گره|مانع"],
+      negative_signs:["ایده خوبیه|فکر کنم|شاید","همه چی خوبه"],
+      feedback:"مسئله‌ای که حل می‌کنی واضح بیان نشده — هنوز معلوم نیست دقیقاً چه دردی رو دوا می‌کنی.",
+      feedback_pass:"مسئله‌ی اصلی که حل می‌کنی واضح و مشخص بیان شده.",
+      follow_up_questions:["دقیقاً چه مشکلی رو حل می‌کنی؟ یه مثال واقعی بزن که این مشکل رو نشون بده."],
+      improvement_suggestions:["مسئله رو در یک جمله ساده بنویس: «X نمی‌تونه Y رو انجام بده چون Z.»"] },
+    { id:"idea_who_affected", severity:"high", required:true, depends_on:[], min_positive_matches:1,
+      score_if_pass:8, score_if_fail:-10,
+      positive_signs:["مشتری|کاربر|افراد|کسانی که|گروهی که|دانشجو|کارمند|مادر|پدر|کسب‌وکار|فریلنسر"],
+      negative_signs:["همه مردم","هر کسی"],
+      feedback:"مشخص نیست چه کسانی دقیقاً این مسئله رو دارند.",
+      feedback_pass:"گروهی که این مسئله رو دارند مشخص شده.",
+      follow_up_questions:["چه کسانی دقیقاً این مشکل رو دارند؟ چند نفر هستند؟"],
+      improvement_suggestions:["گروه هدف رو با یک ویژگی مشخص کن: «دانشجوهای سال آخر دانشگاه‌های تهران»."] },
+    { id:"idea_why_now", severity:"medium", required:true, depends_on:[], min_positive_matches:1,
+      score_if_pass:6, score_if_fail:-5,
+      positive_signs:["الان|امروزه|اخیرا|جدیدا|تغییر کرد|به‌خاطر|چون|به دلیل|بعد از|با رشد|با آمدن"],
+      negative_signs:[],
+      feedback:"دلیلی که چرا این ایده الان به‌موقع است، بیان نشده.",
+      feedback_pass:"دلیل به‌موقع بودن این ایده توضیح داده شده.",
+      follow_up_questions:["چرا الان زمان مناسبی برای این ایده‌ست؟ چه چیزی اخیراً عوض شده؟"],
+      improvement_suggestions:["بنویس چه تغییر فناوری/اجتماعی/اقتصادی‌ای باعث شده این ایده الان کار کنه."] },
+    { id:"idea_vague", severity:"medium", required:false, depends_on:[], min_positive_matches:1,
+      score_if_pass:0, score_if_fail:-5,
+      positive_signs:[], negative_signs:["شاید بشه","احتمالا خوبه","فکر می‌کنم"],
+      feedback:"پاسخ پر از عبارات مبهم است — به‌جاش اطلاعات مشخص بنویس.",
+      feedback_pass:"", follow_up_questions:[],
+      improvement_suggestions:["کلمات «شاید»، «فکر می‌کنم»، «احتمالاً» رو با جمله‌ی قطعی و مثال جایگزین کن."] }
+  ],
+
+  solution: [
+    { id:"sol_clear_description", severity:"critical", required:true, depends_on:[], min_positive_matches:1,
+      score_if_pass:10, score_if_fail:-15,
+      positive_signs:["محصول|سرویس|اپلیکیشن|اپ|پلتفرم|نرم‌افزار|سایت|ابزار|خدمت","کاربر می‌تونه|می‌تونن|امکان|قابلیت"],
+      negative_signs:[],
+      feedback:"راه‌حل تو واضح توضیح داده نشده — معلوم نیست دقیقاً چی می‌سازی.",
+      feedback_pass:"راه‌حل با جزئیات کافی توضیح داده شده.",
+      follow_up_questions:["محصول تو دقیقاً چیه؟ کاربر چطور باهاش کار می‌کنه؟ یه مثال بزن."],
+      improvement_suggestions:["راه‌حل رو به‌صورت یک سناریو بنویس: «کاربر وارد می‌شه، X رو انجام می‌ده، و Y دریافت می‌کنه.»"] },
+    { id:"sol_unique_value", severity:"high", required:true, depends_on:["sol_clear_description"], min_positive_matches:1,
+      score_if_pass:9, score_if_fail:-12,
+      positive_signs:["برتر|بهتر|متفاوت|مزیت|ویژگی خاص|تنها|یگانه|سریع‌تر|ارزان‌تر|راحت‌تر|دقیق‌تر"],
+      negative_signs:[],
+      feedback:"مزیت رقابتی مشخص نشده — چرا مشتری تو رو انتخاب کنه؟",
+      feedback_pass:"مزیت کلیدی راه‌حل تو مشخص شده.",
+      follow_up_questions:["چرا این راه‌حل از گزینه‌های فعلی بهتره؟ یک مزیت اصلی رو بنویس."],
+      improvement_suggestions:["یک مزیت (سرعت، قیمت، راحتی، دسترسی، کیفیت) رو انتخاب کن و روی همون تمرکز کن."] },
+    { id:"sol_alternative", severity:"medium", required:true, depends_on:[], min_positive_matches:1,
+      score_if_pass:6, score_if_fail:-5,
+      positive_signs:["جایگزین|الان|مردم الان|راه‌حل فعلی|روش سنتی|با دست|اکسل|کاغذ|تلفنی"],
+      negative_signs:[],
+      feedback:"نگفتی مشتری الان مشکلش رو چطور حل می‌کنه (جایگزین فعلی).",
+      feedback_pass:"راه‌حل فعلی/جایگزینی که مشتری الان استفاده می‌کنه، ذکر شده.",
+      follow_up_questions:["مشتری الان این مشکل رو چطور حل می‌کنه؟ از چه ابزار یا روشی استفاده می‌کنه؟"],
+      improvement_suggestions:["جایگزین فعلی رو بنویس (مثلاً «اکسل»، «تماس تلفنی») و بعد بگو تو چطور بهترش می‌کنی."] }
+  ],
+
+  revenue: [
+    { id:"rev_model_named", severity:"critical", required:true, depends_on:[], min_positive_matches:1,
+      score_if_pass:10, score_if_fail:-15,
+      positive_signs:["اشتراک|ماهانه|سالانه|تراکنش|کمیسیون|تبلیغات|تبلیغاتی|فروش|یکبار|درصد|کارمزد|لایسنس|پلن"],
+      negative_signs:[],
+      feedback:"مدل درآمدی مشخص نیست — معلوم نیست از کجا پول درمیاری.",
+      feedback_pass:"مدل درآمدی به‌وضوح مشخص شده.",
+      follow_up_questions:["دقیقاً از چه راهی پول درمیاری؟ اشتراک؟ کمیسیون؟ فروش؟"],
+      improvement_suggestions:["یکی از این‌ها رو انتخاب کن: اشتراک ماهانه/سالانه، کارمزد تراکنش، فروش یکباره، تبلیغات، یا مدل ترکیبی."] },
+    { id:"rev_price_number", severity:"high", required:true, depends_on:["rev_model_named"], min_positive_matches:1,
+      score_if_pass:8, score_if_fail:-10,
+      positive_signs:["[\\d۰-۹][\\d۰-۹,.]*\\s?(تومان|ریال|دلار|یورو|هزار|میلیون|درصد|%)"],
+      negative_signs:[],
+      feedback:"هیچ عددی برای قیمت‌گذاری نیامده.",
+      feedback_pass:"قیمت‌گذاری با عدد مشخص بیان شده.",
+      follow_up_questions:["قیمت دقیق چقدره؟ ماهانه یا سالانه؟"],
+      improvement_suggestions:["یه عدد واقعی بنویس (مثلاً «ماهانه ۲۰۰ هزار تومان») نه «ارزان» یا «منصفانه»."] },
+    { id:"rev_price_reason", severity:"medium", required:true, depends_on:["rev_price_number"], min_positive_matches:1,
+      score_if_pass:6, score_if_fail:-5,
+      positive_signs:["چون|به‌خاطر|بر اساس|طبق|مقایسه|رقبا|ارزش|درآمد|هزینه"],
+      negative_signs:[],
+      feedback:"دلیلی برای این قیمت‌گذاری ارائه نشده.",
+      feedback_pass:"دلیل انتخاب این قیمت توضیح داده شده.",
+      follow_up_questions:["چرا این قیمت رو انتخاب کردی؟ با چی مقایسه کردی؟"],
+      improvement_suggestions:["بنویس قیمت رو بر اساس چه چیزی انتخاب کردی (هزینه‌ی تولید، قیمت رقبا، ارزش برای مشتری)."] },
+    { id:"rev_willingness", severity:"medium", required:true, depends_on:[], min_positive_matches:1,
+      score_if_pass:6, score_if_fail:-5,
+      positive_signs:["حاضر.*پرداخت|پرداخت می‌کنن|مشتری.*پول|هزینه می‌کنن|خرید می‌کنن"],
+      negative_signs:[],
+      feedback:"نشان ندادی که مشتری حاضر به پرداخت این مبلغ هست.",
+      feedback_pass:"تمایل مشتری به پرداخت مشخص شده.",
+      follow_up_questions:["چطور مطمئنی مشتری این مبلغ رو پرداخت می‌کنه؟"],
+      improvement_suggestions:["بنویس مشتری الان برای این مشکل چقدر خرج می‌کنه."] }
+  ],
+
+  competition: [
+    { id:"comp_named_rivals", severity:"critical",
