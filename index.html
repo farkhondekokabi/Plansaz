@@ -398,4 +398,359 @@ const KNOWLEDGE_BASE = {
   ],
 
   competition: [
-    { id:"comp_named_rivals", severity:"critical",
+    { id:"comp_named_rivals", severity:"critical", required:true, depends_on:[], min_positive_matches:1,
+      score_if_pass:10, score_if_fail:-15,
+      positive_signs:["رقیب|رقبا|شرکت|استارتاپ|برند|سرویس مشابه|محصول مشابه|مانند"],
+      negative_signs:["هیچ رقیبی نداریم","رقیب نداره"],
+      feedback:"رقیب مشخصی نام نبردی — «نداشتن رقیب» معمولاً یعنی بازار وجود نداره.",
+      feedback_pass:"حداقل یک رقیب واقعی نام برده شده.",
+      follow_up_questions:["حداقل دو رقیب واقعی نام ببر — مستقیم یا غیرمستقیم."],
+      improvement_suggestions:["جستجو کن و حداقل دو نام مشخص بنویس (حتی اگه غیرمستقیم رقیب باشن)."] },
+    { id:"comp_differentiator", severity:"high", required:true, depends_on:["comp_named_rivals"], min_positive_matches:1,
+      score_if_pass:9, score_if_fail:-12,
+      positive_signs:["متفاوت|مزیت|بهتر|تنها|یگانه|برتر|ویژگی خاص|چیزی که ما"],
+      negative_signs:[],
+      feedback:"تفاوت تو با رقبا مشخص نشده — چرا مشتری تو رو انتخاب کنه؟",
+      feedback_pass:"تفاوت کلیدی تو با رقبا بیان شده.",
+      follow_up_questions:["دقیقاً چه چیزی تو رو از این رقبا متمایز می‌کنه؟"],
+      improvement_suggestions:["یک تمایز واقعی بنویس (قیمت، سرعت، تجربه‌ی کاربری، دسترسی، پشتیبانی)."] },
+    { id:"comp_indirect", severity:"medium", required:false, depends_on:[], min_positive_matches:1,
+      score_if_pass:5, score_if_fail:-3,
+      positive_signs:["غیرمستقیم|جایگزین|اکسل|دستی|سنتی|هیچ کاری نمی‌کنن"],
+      negative_signs:[],
+      feedback:"رقبای غیرمستقیم (روش‌های سنتی) رو در نظر نگرفتی.",
+      feedback_pass:"رقبای غیرمستقیم هم در نظر گرفته شده.",
+      follow_up_questions:["مردم الان بدون محصول تو، این مشکل رو چطور حل می‌کنن؟"],
+      improvement_suggestions:["بنویس مشتری الان به‌جای محصول تو از چی استفاده می‌کنه (اکسل، تلفن، دستی، هیچ)."] }
+  ],
+
+  marketing: [
+    { id:"mkt_first_100", severity:"critical", required:true, depends_on:[], min_positive_matches:1,
+      score_if_pass:10, score_if_fail:-15,
+      positive_signs:["اینستاگرام|تلگرام|لینکدین|توییتر|گوگل|تبلیغات|معرفی|دهان به دهان|انجمن|گروه|کامیونیتی|رویداد|نمایشگاه|ایمیل|پیامک"],
+      negative_signs:[],
+      feedback:"نگفتی اولین مشتری‌ها رو از کجا میاری.",
+      feedback_pass:"کانال جذب اولین مشتری‌ها مشخص شده.",
+      follow_up_questions:["اولین ۱۰۰ مشتری رو دقیقاً از کجا میاری؟"],
+      improvement_suggestions:["یک یا دو کانال مشخص انتخاب کن (مثلاً «گروه‌های تلگرامی X» یا «تبلیغ در اینستاگرام»)."] },
+    { id:"mkt_focus", severity:"high", required:true, depends_on:["mkt_first_100"], min_positive_matches:1,
+      score_if_pass:7, score_if_fail:-8,
+      positive_signs:["تمرکز|اصلی|مهم‌ترین|اول|فقط"],
+      negative_signs:["همه کانال‌ها","همه جا","همه راه‌ها"],
+      feedback:"استراتژی بازاریابی پخش‌شده — بهتره روی ۱-۲ کانال تمرکز کنی.",
+      feedback_pass:"تمرکز روی کانال(های) مشخصی دیده می‌شه.",
+      follow_up_questions:["مهم‌ترین کانالت کدومه؟ چرا؟"],
+      improvement_suggestions:["به‌جای «همه کانال‌ها»، یک یا دو کانال اصلی رو انتخاب کن."] },
+    { id:"mkt_cac", severity:"medium", required:true, depends_on:["mkt_first_100"], min_positive_matches:1,
+      score_if_pass:6, score_if_fail:-5,
+      positive_signs:["CAC|هزینه جذب|هزینه.*مشتری|هر مشتری.*هزینه|[\\d۰-۹]+.*تومان.*مشتری"],
+      negative_signs:[],
+      feedback:"هزینه‌ی جذب هر مشتری (CAC) تخمین زده نشده.",
+      feedback_pass:"هزینه‌ی جذب مشتری تخمین زده شده.",
+      follow_up_questions:["تقریباً هزینه‌ی جذب هر مشتری چقدره؟"],
+      improvement_suggestions:["یه تخمین ساده بزن: «اگه ماهی ۱ میلیون تبلیغ خرج کنم و ۵۰ مشتری بیاد، CAC = ۲۰ هزار تومان.»"] }
+  ],
+
+  team: [
+    { id:"team_members", severity:"critical", required:true, depends_on:[], min_positive_matches:1,
+      score_if_pass:10, score_if_fail:-15,
+      positive_signs:["من|خودم|همکار|شریک|تیم|فنی|برنامه‌نویس|طراح|بازاریاب|فروش|مدیر"],
+      negative_signs:[],
+      feedback:"اعضای تیم یا نقش‌ها مشخص نشده.",
+      feedback_pass:"اعضای تیم و نقش‌ها مشخص شده.",
+      follow_up_questions:["تیم فعلی از چه کسانی تشکیل شده؟ هرکس چه مهارتی داره؟"],
+      improvement_suggestions:["اسم/نقش هر عضو رو بنویس و مهارت اصلی‌ش رو کنارش بیار."] },
+    { id:"team_why_us", severity:"high", required:true, depends_on:["team_members"], min_positive_matches:1,
+      score_if_pass:9, score_if_fail:-12,
+      positive_signs:["تجربه|سابقه|کار کردم|سال|پروژه|تخصص|مهارت|قبلا"],
+      negative_signs:[],
+      feedback:"دلیل «چرا این تیم» برای این مسئله توضیح داده نشده.",
+      feedback_pass:"تجربه‌ی مرتبط تیم با این مسئله بیان شده.",
+      follow_up_questions:["چه تجربه‌ی مرتبطی با این مسئله دارید؟"],
+      improvement_suggestions:["تجربه‌ی مستقیم تیم با این مسئله رو بنویس (نه رزومه‌ی کلی)."] },
+    { id:"team_missing_role", severity:"medium", required:true, depends_on:["team_members"], min_positive_matches:1,
+      score_if_pass:6, score_if_fail:-5,
+      positive_signs:["نیاز داریم|کمبود|خالیه|باید استخدام|دنبال.*هستم|نقش.*خالی"],
+      negative_signs:[],
+      feedback:"نگفتی چه نقشی در تیم خالیه.",
+      feedback_pass:"نقش خالی/موردنیاز تیم مشخص شده.",
+      follow_up_questions:["چه مهارتی در تیم کم داری و باید اضافه کنی؟"],
+      improvement_suggestions:["نقش خالی رو صریح بنویس (مثلاً «برنامه‌نویس موبایل» یا «بازاریاب»)."] }
+  ],
+
+  financials: [
+    { id:"fin_costs", severity:"critical", required:true, depends_on:[], min_positive_matches:1,
+      score_if_pass:10, score_if_fail:-15,
+      positive_signs:["هزینه|خرج|پرداخت|اجاره|حقوق|سرور|تبلیغ|توسعه|[\\d۰-۹]+.*تومان"],
+      negative_signs:[],
+      feedback:"هزینه‌های ماهانه مشخص نشده.",
+      feedback_pass:"هزینه‌های اصلی مشخص شده.",
+      follow_up_questions:["هزینه‌های ثابت و متغیر ماهانه‌ت چقدره؟"],
+      improvement_suggestions:["هزینه‌ها رو دسته‌بندی کن: ثابت (اجاره، حقوق) و متغیر (سرور، تبلیغ)."] },
+    { id:"fin_amount_number", severity:"high", required:true, depends_on:[], min_positive_matches:1,
+      score_if_pass:8, score_if_fail:-12,
+      positive_signs:["[\\d۰-۹][\\d۰-۹,.]*\\s?(میلیون|میلیارد|هزار|تومان|دلار)"],
+      negative_signs:[],
+      feedback:"مبلغ موردنیاز با عدد بیان نشده.",
+      feedback_pass:"مبلغ موردنیاز با عدد مشخص شده.",
+      follow_up_questions:["به چه مبلغی نیاز داری و برای چه مدت؟"],
+      improvement_suggestions:["یه عدد مشخص بنویس (مثلاً «۵۰۰ میلیون تومان برای ۶ ماه»)."] },
+    { id:"fin_runway", severity:"medium", required:true, depends_on:["fin_amount_number"], min_positive_matches:1,
+      score_if_pass:6, score_if_fail:-5,
+      positive_signs:["ماه|سال|تا|برای.*مدت|runway|کفاف"],
+      negative_signs:[],
+      feedback:"مشخص نیست این مبلغ چقدر دوام میاره.",
+      feedback_pass:"مدت دوام بودجه مشخص شده.",
+      follow_up_questions:["این مبلغ برای چند ماه کافیه؟"],
+      improvement_suggestions:["بنویس این بودجه چند ماه دوام میاره (مثلاً «برای ۹ ماه»)."] }
+  ],
+
+  roadmap: [
+    { id:"road_milestones", severity:"critical", required:true, depends_on:[], min_positive_matches:1,
+      score_if_pass:10, score_if_fail:-15,
+      positive_signs:["ماه|۳ ماه|۶ ماه|۱۲ ماه|سه ماه|شش ماه|یک سال|فاز|مرحله|گام"],
+      negative_signs:[],
+      feedback:"نقشه‌ی زمانی مشخصی ارائه نشده.",
+      feedback_pass:"نقشه‌ی زمانی مراحل مشخص شده.",
+      follow_up_questions:["۳ ماه، ۶ ماه و ۱۲ ماه آینده چه کارهایی انجام می‌دی؟"],
+      improvement_suggestions:["مراحل رو به بازه‌های زمانی مشخص تقسیم کن: ۳ ماه، ۶ ماه، ۱۲ ماه."] },
+    { id:"road_measurable", severity:"high", required:true, depends_on:["road_milestones"], min_positive_matches:1,
+      score_if_pass:9, score_if_fail:-12,
+      positive_signs:["[\\d۰-۹]+\\s?(کاربر|مشتری|فروش|درصد|%|میلیون|هزار)"],
+      negative_signs:["رشد خوب","پیشرفت"],
+      feedback:"مراحل قابل اندازه‌گیری نیستن — «رشد خوب» معیار نیست.",
+      feedback_pass:"مراحل با معیار قابل اندازه‌گیری تعریف شدن.",
+      follow_up_questions:["هر مرحله چه معیار قابل اندازه‌گیری داره؟ (مثلاً چند کاربر، چند فروش؟)"],
+      improvement_suggestions:["هر مرحله رو با یه عدد بنویس (مثلاً «۵۰۰ کاربر فعال» نه «رشد خوب»)."] },
+    { id:"road_next_milestone", severity:"medium", required:true, depends_on:["road_milestones"], min_positive_matches:1,
+      score_if_pass:6, score_if_fail:-5,
+      positive_signs:["بعدی|نزدیک|اول|مهم‌ترین"],
+      negative_signs:[],
+      feedback:"مهم‌ترین نقطه‌عطف بعدی مشخص نشده.",
+      feedback_pass:"نقطه‌عطف بعدی مشخص شده.",
+      follow_up_questions:["مهم‌ترین نقطه‌عطف بعدی چیه و کی می‌رسی بهش؟"],
+      improvement_suggestions:["یک نقطه‌عطف بعدی رو با تاریخ و معیار مشخص کن."] }
+  ],
+
+  risks: [
+    { id:"risk_named", severity:"critical", required:true, depends_on:[], min_positive_matches:1,
+      score_if_pass:10, score_if_fail:-15,
+      positive_signs:["ریسک|خطر|تهدید|مشکل|نگرانی|ممکنه|احتمال"],
+      negative_signs:["هیچ ریسکی نداریم","ریسک نداره"],
+      feedback:"ریسک‌ها نام برده نشدن — هر کسب‌وکاری ریسک داره.",
+      feedback_pass:"ریسک‌های اصلی نام برده شدن.",
+      follow_up_questions:["بزرگ‌ترین ریسکی که می‌تونه این کسب‌وکار رو شکست بده چیه؟"],
+      improvement_suggestions:["حداقل دو ریسک واقعی بنویس (مالی، فنی، قانونی، بازار، تیم)."] },
+    { id:"risk_mitigation", severity:"high", required:true, depends_on:["risk_named"], min_positive_matches:1,
+      score_if_pass:9, score_if_fail:-12,
+      positive_signs:["اگه.*بشه|راه‌حل|برنامه|جایگزین|B|پیشگیری|کاهش|مدیریت"],
+      negative_signs:[],
+      feedback:"برای ریسک‌ها برنامه‌ی مقابله نداری.",
+      feedback_pass:"برای ریسک‌ها برنامه‌ی مقابله ارائه شده.",
+      follow_up_questions:["برای هر ریسک چه برنامه‌ی B داری؟"],
+      improvement_suggestions:["برای هر ریسک یک راه‌حل یا برنامه‌ی جایگزین بنویس."] },
+    { id:"risk_honesty", severity:"medium", required:true, depends_on:["risk_named"], min_positive_matches:1,
+      score_if_pass:6, score_if_fail:-5,
+      positive_signs:["بزرگ‌ترین|اصلی|جدی|مهم"],
+      negative_signs:["ریسک کم","مشکل کوچک"],
+      feedback:"به نظر می‌رسه ریسک‌ها کوچک‌نمایی شدن.",
+      feedback_pass:"صادقانه به ریسک‌های اصلی اشاره شده.",
+      follow_up_questions:["اگه بخوای صادق باشی، بزرگ‌ترین نقطه‌ضعف چیه؟"],
+      improvement_suggestions:["صادقانه بزرگ‌ترین نقطه‌ضعف رو بنویس — مخفی‌کردن ریسک به کسی کمک نمی‌کنه."] }
+  ],
+
+  market: [
+    { id:"market_customer_too_broad", severity:"critical", required:true, depends_on:[], min_positive_matches:1,
+      score_if_pass:8, score_if_fail:-15,
+      positive_signs:["\\d+\\s*(تا|الی)\\s*\\d+\\s*سال","دانشجو(یان)?|دانش‌آموز(ان)?","مادر(ان)?|پدر(ان)?|بازنشسته(ها)?","کارآفرین(ان)?|صاحب(ان)? کسب‌وکار|فریلنسر(ها)?","شاغل(ین)?|کارمند(ان)?","(تهران|شیراز|اصفهان|مشهد|شهرهای بزرگ|شهرستان)"],
+      negative_signs:["همه( ی)? (افراد|مردم)","هر ?کس(ی)?","عموم مردم","تقریبا همه"],
+      feedback:"مشتری هدف بیش از حد کلی تعریف شده — گروهی به این بزرگی عملاً قابل هدف‌گیری با یک محصول واحد نیست.",
+      feedback_pass:"مشتری هدف با حداقل یک ویژگی محدودکننده (سن/شغل/مکان/مرحله‌ی زندگی) مشخص شده.",
+      follow_up_questions:["دقیقاً کدام زیرگروه را هدف می‌گیری؟ چه ویژگی مشترکی این گروه را از بقیه جدا می‌کند؟"],
+      improvement_suggestions:["یک زیرگروه با حداقل یک ویژگی مشخص تعریف کن."] },
+    { id:"market_customer_multi_trait", severity:"medium", required:false, depends_on:["market_customer_too_broad"], min_positive_matches:2,
+      score_if_pass:6, score_if_fail:-4,
+      positive_signs:["\\d+\\s*(تا|الی)\\s*\\d+\\s*سال","دانشجو(یان)?|دانش‌آموز(ان)?","مادر(ان)?|پدر(ان)?|بازنشسته(ها)?","کارآفرین(ان)?|صاحب(ان)? کسب‌وکار|فریلنسر(ها)?","شاغل(ین)?|کارمند(ان)?","(تهران|شیراز|اصفهان|مشهد|شهرهای بزرگ|شهرستان)"],
+      negative_signs:[],
+      feedback:"مشتری فقط با یک ویژگی محدود شده؛ برای هدف‌گیری دقیق‌تر به حداقل یک ویژگی دیگر نیاز داری.",
+      feedback_pass:"مشتری با چند ویژگی هم‌زمان به‌خوبی محدود شده.",
+      follow_up_questions:["علاوه بر ویژگی‌ای که گفتی، این گروه چه ویژگی مشترک دیگری هم دارند؟"],
+      improvement_suggestions:["یک ویژگی محدودکننده‌ی دوم اضافه کن."] },
+    { id:"market_pain_named", severity:"high", required:true, depends_on:[], min_positive_matches:1,
+      score_if_pass:8, score_if_fail:-10,
+      positive_signs:["چون |به دلیل |به‌دلیل |که (نمی‌تونن|نمی‌توانند|نمی‌تونه|نمی‌تواند)","کمبود وقت|وقت کافی ندار","مشکل|دردسر|چالش","نیاز دار(ند|ن)|احتیاج دار"],
+      negative_signs:[],
+      feedback:"دلیل یا مشکل مشخصی که این گروه رو به محصول تو نیازمند می‌کنه، بیان نشده.",
+      feedback_pass:"دلیل/مشکل مشخصی که این مشتری رو به محصول تو گره می‌زنه، بیان شده.",
+      follow_up_questions:["دقیقاً این مشتری چه مشکلی داره که باعث می‌شه به این محصول نیاز داشته باشه؟"],
+      improvement_suggestions:["یک جمله‌ی علّی اضافه کن: «چون X، این گروه نمی‌تونه Y، پس به این محصول نیاز داره.»"] },
+    { id:"market_pain_validated", severity:"medium", required:true, depends_on:["market_pain_named"], min_positive_matches:1,
+      score_if_pass:6, score_if_fail:-5,
+      positive_signs:["مصاحبه|نظرسنجی|پایلوت|تست کردم|فیدبک گرفتم|مشتری اولیه|validation|pilot"],
+      negative_signs:[],
+      feedback:"هنوز شواهدی از صحبت واقعی با مشتری نیامده — این فرض هنوز اعتبارسنجی‌نشده است.",
+      feedback_pass:"این فرض با شواهد واقعی پشتیبانی شده.",
+      follow_up_questions:["آیا با چند نفر از این مشتری‌های احتمالی صحبت کردی؟ نتیجه چی بود؟"],
+      improvement_suggestions:["حداقل با ۵ تا ۱۰ نفر از این گروه مصاحبه کن."] },
+    { id:"market_size_number", severity:"high", required:true, depends_on:[], min_positive_matches:1,
+      score_if_pass:7, score_if_fail:-10,
+      positive_signs:["[\\d۰-۹][\\d۰-۹,.]*\\s?(نفر|کاربر|مشتری|میلیون|هزار|میلیارد|درصد|%)"],
+      negative_signs:[],
+      feedback:"هیچ عدد مشخصی برای اندازه‌ی بازار بیان نشده.",
+      feedback_pass:"اندازه‌ی بازار با یک عدد مشخص بیان شده.",
+      follow_up_questions:["اندازه‌ی این بازار رو با یه عدد تقریبی بیان کن."],
+      improvement_suggestions:["حتی یک برآورد تقریبی با عدد بهتر از توصیف کیفیه (مثلاً «حدود ۲۰۰ هزار نفر»)."] },
+    { id:"market_size_source", severity:"medium", required:true, depends_on:["market_size_number"], min_positive_matches:1,
+      score_if_pass:6, score_if_fail:-5,
+      positive_signs:["طبق |بر اساس |گزارش |آمار |منبع|تحقیق|محاسبه کردم|برآورد کردم"],
+      negative_signs:[],
+      feedback:"عددی که برای اندازه‌ی بازار دادی، به هیچ منبع یا محاسبه‌ای اشاره نمی‌کنه.",
+      feedback_pass:"عدد اندازه‌ی بازار به یک منبع یا محاسبه‌ی مشخص وصل شده.",
+      follow_up_questions:["این عدد رو از کجا آوردی؟"],
+      improvement_suggestions:["منبع عدد رو بنویس، یا نحوه‌ی محاسبه‌ی خودت رو توضیح بده."] },
+    { id:"market_willingness_to_pay", severity:"medium", required:true, depends_on:[], min_positive_matches:1,
+      score_if_pass:6, score_if_fail:-5,
+      positive_signs:["حاضر(ند)? .*(پرداخت|پول)|پرداخت می‌کنن|مشترک می‌شن|هزینه.*پرداخت"],
+      negative_signs:[],
+      feedback:"هیچ نشانه‌ای از تمایل این مشتری به پرداخت پول برای این راه‌حل دیده نمی‌شه.",
+      feedback_pass:"تمایل این مشتری به پرداخت پول برای این راه‌حل مشخص شده.",
+      follow_up_questions:["چرا فکر می‌کنی این گروه حاضر به پرداخت پول هستن؟"],
+      improvement_suggestions:["یه جمله اضافه کن که نشون بده این مشتری الان هم برای حل این مشکل هزینه می‌کنه."] },
+    { id:"market_vague_hedging", severity:"low", required:false, depends_on:[], min_positive_matches:1,
+      score_if_pass:0, score_if_fail:-4,
+      positive_signs:[], negative_signs:["شاید|احتمالا|فکر کنم|به نظرم بازار خوبیه|بازار بزرگیه"],
+      feedback:"پاسخ به‌جای اطلاعات مشخص، پر از عبارات مبهم و کلی است.", feedback_pass:"",
+      follow_up_questions:[], improvement_suggestions:["عبارات مبهم رو با اطلاعات مشخص جایگزین کن."] }
+  ]
+};
+
+function testAny(patterns, text){ return patterns.some(p => new RegExp(p, "i").test(text)); }
+function countMatches(patterns, text){ return patterns.filter(p => new RegExp(p, "i").test(text)).length; }
+function orderByDependency(rules){
+  const byId = Object.fromEntries(rules.map(r => [r.id, r])); const done = new Set(), ordered = [];
+  function visit(r){ if(done.has(r.id)) return; (r.depends_on||[]).forEach(d => byId[d] && visit(byId[d])); done.add(r.id); ordered.push(r); }
+  rules.forEach(visit); return ordered;
+}
+function evaluateSection(sectionId, answer){
+  const rules = orderByDependency(KNOWLEDGE_BASE[sectionId] || []);
+  const results = {}; let score = 40;
+  const weaknesses=[], strengths=[], followups=[], suggestions=[];
+  for(const r of rules){
+    const depsOk = (r.depends_on||[]).every(d => results[d] === "pass");
+    if((r.depends_on||[]).length && !depsOk){ results[r.id]="skipped"; continue; }
+    const negHit = r.negative_signs.length && testAny(r.negative_signs, answer);
+    let status;
+    if(negHit) status = "fail";
+    else if(r.positive_signs.length){
+      const n = countMatches(r.positive_signs, answer);
+      status = n >= (r.min_positive_matches||1) ? "pass" : (n>0 ? "partial" : "unclear");
+    } else status = "unclear";
+    if(status==="fail" || (status==="unclear" && r.required) || status==="partial"){
+      score += status==="partial" ? Math.round(r.score_if_fail/2) : r.score_if_fail;
+      if(r.feedback) weaknesses.push(r.feedback);
+      followups.push(...(r.follow_up_questions||[])); suggestions.push(...(r.improvement_suggestions||[]));
+      results[r.id] = status==="partial" ? "partial" : "fail";
+    } else if(status==="pass"){
+      score += r.score_if_pass; if(r.feedback_pass) strengths.push(r.feedback_pass); results[r.id]="pass";
+    } else results[r.id]="unclear";
+  }
+  score = Math.max(0, Math.min(100, score));
+  return { score, weaknesses, strengths, followups, suggestions, results };
+}
+function explainScore({score, weaknesses, strengths}){
+  const tier = score>=85?"عالی":score>=70?"قابل اجرا":score>=50?"نیاز به بازنگری":"ضعیف";
+  const clause = weaknesses[0] ? "، اما "+weaknesses[0] : (strengths[0] ? "، و "+strengths[0] : "");
+  return score+"/100 — "+tier+clause;
+}
+
+function analyze(){
+  const s = SECTIONS[current], box = document.getElementById("aiBox"), btn = document.getElementById("aiBtn");
+  if(!KNOWLEDGE_BASE[s.id]){ box.innerHTML = '<div class="ai">تحلیل هوشمند این بخش هنوز آماده نیست.</div>'; return; }
+  if(wordCount(state[s.id]) < 10){ box.innerHTML = '<div class="ai">اول یه پاسخ کامل‌تر بنویس (حداقل چند جمله).</div>'; return; }
+  btn.disabled = true;
+  const r = evaluateSection(s.id, state[s.id]);
+  state._ai = state._ai || {}; state._ai[s.id] = r;
+  scheduleSave(); renderOverview();
+  btn.disabled = false; renderAi();
+}
+function renderAi(){
+  const s = SECTIONS[current], r = state._ai && state._ai[s.id], box = document.getElementById("aiBox");
+  if(!r){ box.innerHTML = ""; return; }
+  const list = (t, a) => (a && a.length) ? "<h4>"+t+"</h4><ul>"+a.map(x=>"<li>"+esc(x)+"</li>").join("")+"</ul>" : "";
+  box.innerHTML = '<div class="ai"><span class="score">'+esc(explainScore(r))+'</span>'
+    + list("نقاط قوت", r.strengths) + list("ضعف‌ها", r.weaknesses)
+    + list("پیشنهادهای اصلاح", r.suggestions)
+    + list("سؤال‌های پیگیری (جواب بده و دوباره تحلیل کن)", r.followups) + "</div>";
+}
+document.getElementById("planBtn").onclick = () => { document.getElementById("docStatus").textContent = "این خروجی وقتی همه‌ی بخش‌ها به موتور محلی وصل بشن فعال می‌شه — بدون هیچ هزینه‌ای."; };
+document.getElementById("roadBtn").onclick = () => { document.getElementById("docStatus").textContent = "این خروجی وقتی همه‌ی بخش‌ها به موتور محلی وصل بشن فعال می‌شه — بدون هیچ هزینه‌ای."; };
+
+const LOCK_KEY = "bpf_unlocked_code_v1";
+
+async function verifyCode(code){
+  try{
+    const { data, error } = await sb.rpc("check_code", { p_code: code });
+    return !error && data === true;
+  }catch(e){ return false; }
+}
+
+function openApp(code){
+  currentCode = code;
+  document.body.classList.remove("locked");
+  document.getElementById("gate").style.display = "none";
+  init();
+}
+
+async function tryUnlock(code){
+  const c = code.trim();
+  if(!c) return false;
+  if(await verifyCode(c)){
+    try{ localStorage.setItem(LOCK_KEY, c); }catch(e){}
+    openApp(c);
+    return true;
+  }
+  return false;
+}
+
+(async function checkLock(){
+  const btn = document.getElementById("gateBtn");
+  const err = document.getElementById("gateErr");
+  btn.onclick = async () => {
+    err.textContent = "";
+    btn.disabled = true;
+    const ok = await tryUnlock(document.getElementById("gateInput").value);
+    btn.disabled = false;
+    if(!ok) err.textContent = "کد اشتباهه یا معتبر نیست.";
+  };
+  document.getElementById("gateInput").addEventListener("keydown", e => {
+    if(e.key === "Enter") btn.click();
+  });
+
+  let saved = null;
+  try{ saved = localStorage.getItem(LOCK_KEY); }catch(e){}
+  if(saved && await verifyCode(saved)) openApp(saved);
+})();
+
+async function init(){
+  let localData = null;
+  try{
+    const raw = localStorage.getItem(dataKey());
+    if(raw){ localData = JSON.parse(raw).data; }
+  }catch(e){}
+
+  let remoteData = null;
+  try{
+    const { data, error } = await sb.rpc("get_plan", { p_code: currentCode });
+    if(!error && data) remoteData = data;
+  }catch(e){}
+
+  const best = remoteData || localData;
+  if(best){
+    SECTIONS.forEach(s => { if(best[s.id]) state[s.id] = best[s.id]; });
+    if(best._ai) state._ai = best._ai;
+  }
+  renderAll();
+}
+</script>
+</body>
+</html>
